@@ -1,5 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
+// Datos de la colonia
 @Entity('colonias')
 export class ColoniaEntity {
   @PrimaryGeneratedColumn()

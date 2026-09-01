@@ -12,6 +12,7 @@ export class ColoniasService {
     private readonly repositorioColonias: Repository<ColoniaEntity>,
   ) {}
 
+  // Crear una colonia
   create(createColoniaDto: CreateColoniaDto): Promise<ColoniaEntity> {
     return this.repositorioColonias.save(createColoniaDto);
   }
@@ -20,6 +21,7 @@ export class ColoniasService {
     return this.repositorioColonias.find();
   }
 
+  // Buscar colonia por id
   findOne(id: number): Promise<ColoniaEntity | null> {
     return this.repositorioColonias.findOne({
       where: {
@@ -28,14 +30,12 @@ export class ColoniasService {
     });
   }
 
+  // Actualizar colonia (solo los campos que se envíen)
   update(
     id: number,
     updateColoniaDto: UpdateColoniaDto,
   ): Promise<UpdateResult> {
-    return this.repositorioColonias.update(id, {
-      nombre: updateColoniaDto.nombre,
-      codigoPostal: updateColoniaDto.codigoPostal,
-    });
+    return this.repositorioColonias.update(id, updateColoniaDto);
   }
 
   remove(id: number): Promise<DeleteResult> {

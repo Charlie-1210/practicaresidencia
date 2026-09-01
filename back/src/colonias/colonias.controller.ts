@@ -18,6 +18,7 @@ import { DeleteResult, UpdateResult } from 'typeorm';
 export class ColoniasController {
   constructor(private readonly coloniasService: ColoniasService) {}
 
+  // Crear una colonia
   @Post()
   create(@Body() createColoniaDto: CreateColoniaDto): Promise<ColoniaEntity> {
     return this.coloniasService.create(createColoniaDto);
@@ -28,6 +29,7 @@ export class ColoniasController {
     return this.coloniasService.findAll();
   }
 
+  // Buscar colonia por id
   @Get(':id')
   findOne(
     @Param('id', ParseIntPipe) id: number,
@@ -35,6 +37,7 @@ export class ColoniasController {
     return this.coloniasService.findOne(id);
   }
 
+  // Actualizar colonia
   @Patch(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
