@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
+import { MunicipioEntity } from '../../municipios/entities/municipio.entity.js';
 
 // Datos de la colonia
 @Entity('colonias')
@@ -26,4 +33,12 @@ export class ColoniaEntity {
     default: true,
   })
   activo: boolean;
+
+  @Column({ nullable: true })
+  municipioId: number;
+
+  // Municipio al que pertenece la colonia
+  @ManyToOne(() => MunicipioEntity, (municipio) => municipio.colonias)
+  @JoinColumn({ name: 'municipioId' })
+  municipio: MunicipioEntity;
 }

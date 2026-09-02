@@ -7,6 +7,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UsuariosModule } from './usuarios/usuarios.module.js';
 import { UsuarioEntity } from './usuarios/entities/usuario.entity.js';
 import { ColoniaEntity } from './colonias/entities/colonia.entity.js';
+import { MunicipiosModule } from './municipios/municipios.module.js';
+import { MunicipioEntity } from './municipios/entities/municipio.entity.js';
 
 @Module({
   imports: [
@@ -22,13 +24,14 @@ import { ColoniaEntity } from './colonias/entities/colonia.entity.js';
         username: configService.get('MYSQL_USER'),
         password: configService.get('MYSQL_PASSWORD'),
         database: configService.get('MYSQL_DATABASE'),
-        entities: [UsuarioEntity, ColoniaEntity],
+        entities: [UsuarioEntity, ColoniaEntity, MunicipioEntity],
         synchronize: true,
       }),
       inject: [ConfigService],
     }),
     ColoniasModule,
     UsuariosModule,
+    MunicipiosModule,
   ],
   controllers: [AppController],
   providers: [AppService],

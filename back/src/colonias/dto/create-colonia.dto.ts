@@ -1,4 +1,4 @@
-import { IsNotEmpty, Length } from 'class-validator';
+import { IsInt, IsNotEmpty, IsOptional, Length } from 'class-validator';
 
 // Datos para crear una colonia
 export class CreateColoniaDto {
@@ -14,4 +14,8 @@ export class CreateColoniaDto {
     message: 'El código postal debe tener exactamente 5 caracteres',
   })
   codigoPostal: string;
+
+  @IsOptional()
+  @IsInt({ message: 'El municipioId debe ser un número entero' })
+  municipioId?: number;
 }
