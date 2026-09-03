@@ -1,15 +1,47 @@
-<div class="flex flex-col">
-  <div class="w-full border p-2 text-center text-4xl font-bold">
-    {{ titulo_aplicacion() }}
-    <p class="text-center text-xs text-gray-500">
-      {{ fecha_creacion() | date: 'long' }}
-    </p>
-  </div>
-  <div class="w-full p-2">
+<div class="app-shell">
+  <header>
+    <mat-toolbar class="app-toolbar">
+      <div class="brand-block">
+        <span class="brand-title">{{ titulo_aplicacion() }}</span>
+        <span class="brand-date">{{ fecha_creacion() | date: 'long' }}</span>
+      </div>
+
+      @if (authService.isAuthenticated()) {
+        <div class="toolbar-actions">
+          <nav mat-tab-nav-bar [tabPanel]="mainPanel" aria-label="Navegación principal">
+            <a
+              mat-tab-link
+              routerLink="/home"
+              routerLinkActive
+              #homeActive="routerLinkActive"
+              [active]="homeActive.isActive"
+            >
+              Inicio
+            </a>
+            <a
+              mat-tab-link
+              routerLink="/usuarios"
+              routerLinkActive
+              #usersActive="routerLinkActive"
+              [active]="usersActive.isActive"
+            >
+              Usuarios
+            </a>
+          </nav>
+
+          <button mat-stroked-button type="button" [matMenuTriggerFor]="accountMenu">
+            Mi cuenta
+          </button>
+          <mat-menu #accountMenu="matMenu">
+            <a mat-menu-item routerLink="/perfil">Ver perfil</a>
+            <button mat-menu-item type="button" (click)="logout()">Cerrar sesión</button>
+          </mat-menu>
+        </div>
+      }
+    </mat-toolbar>
+  </header>
+
+  <mat-tab-nav-panel #mainPanel class="app-content">
     <router-outlet />
-  </div>
-  <div class="w-full p-2 text-fuchsia-500 border-t text-center">
-    <a routerLink="/" class="mx-2"> Home </a>
-    <a routerLink="/perfil" class="mx-2"> Ver perfil </a>
-  </div>
+  </mat-tab-nav-panel>
 </div>

@@ -1,1 +1,51 @@
-<p>Este es tu perfil {{ appService.perfil()?.nombre }}</p>
+<main class="mx-auto max-w-3xl px-4 py-12 sm:px-6">
+  <mat-card appearance="outlined" class="overflow-hidden rounded-3xl">
+    <mat-card-header class="bg-slate-950 px-8 py-8 text-white">
+      <mat-card-subtitle class="text-cyan-300!">Mi cuenta</mat-card-subtitle>
+      <mat-card-title class="mt-2 text-3xl!">Perfil</mat-card-title>
+    </mat-card-header>
+    <mat-divider />
+    <mat-card-content class="p-8!">
+      @if (appService.cargandoPerfil()) {
+        <div class="flex items-center gap-3 text-slate-500" role="status">
+          <mat-spinner diameter="24" aria-label="Cargando perfil" />
+          Cargando información…
+        </div>
+      } @else if (appService.errorPerfil()) {
+        <div
+          class="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700"
+          role="alert"
+        >
+          {{ appService.errorPerfil() }}
+        </div>
+      } @else if (appService.perfil(); as perfil) {
+        <dl class="grid gap-6 sm:grid-cols-2">
+          <div>
+            <dt class="text-sm font-medium text-slate-500">Nombre</dt>
+            <dd class="mt-1 text-lg font-semibold text-slate-950">{{ perfil.nombre }}</dd>
+          </div>
+          <div>
+            <dt class="text-sm font-medium text-slate-500">Correo electrónico</dt>
+            <dd class="mt-1 break-all text-lg font-semibold text-slate-950">{{ perfil.email }}</dd>
+          </div>
+          <div>
+            <dt class="text-sm font-medium text-slate-500">Estado de la cuenta</dt>
+            <dd class="mt-2">
+              <mat-chip-set aria-label="Estado de la cuenta">
+                <mat-chip [highlighted]="perfil.activo">
+                  {{ perfil.activo ? 'Activa' : 'Inactiva' }}
+                </mat-chip>
+              </mat-chip-set>
+            </dd>
+          </div>
+          <div>
+            <dt class="text-sm font-medium text-slate-500">Correo verificado</dt>
+            <dd class="mt-2 text-sm font-semibold text-slate-700">
+              {{ perfil.emailValidated ? 'Sí' : 'Pendiente' }}
+            </dd>
+          </div>
+        </dl>
+      }
+    </mat-card-content>
+  </mat-card>
+</main>

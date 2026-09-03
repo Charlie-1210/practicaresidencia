@@ -9,6 +9,7 @@ import { UsuarioEntity } from './usuarios/entities/usuario.entity.js';
 import { ColoniaEntity } from './colonias/entities/colonia.entity.js';
 import { MunicipiosModule } from './municipios/municipios.module.js';
 import { MunicipioEntity } from './municipios/entities/municipio.entity.js';
+import { AuthModule } from './auth/auth.module.js';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { MunicipioEntity } from './municipios/entities/municipio.entity.js';
     ColoniasModule,
     UsuariosModule,
     MunicipiosModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

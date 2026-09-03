@@ -8,6 +8,11 @@ import { DeleteResult } from 'typeorm/browser';
 import { PaginationParamsUsuarioDTO } from './dto/pagination-params-usuario.dto.js';
 import bcrypt from 'bcrypt';
 
+export interface UsuariosPage {
+  items: UsuarioEntity[];
+  total: number;
+}
+
 @Injectable()
 export class UsuariosService {
   constructor(
@@ -19,6 +24,7 @@ export class UsuariosService {
     createUsuarioDto.password = await this.hashPassword(
       createUsuarioDto.password,
     );
+    createUsuarioDto.email = createUsuarioDto.email.toLocaleLowerCase();
     return this.repositorioUsuarios.save(createUsuarioDto);
   }
 
@@ -32,23 +38,15 @@ export class UsuariosService {
   }
 
   async passwordValido(
-    usuarioId: number,
+    hashedPassword: string,
     clearPassword: string,
   ): Promise<boolean> {
-    const usuario = await this.repositorioUsuarios.findOne({
-      where: {
-        id: usuarioId,
-      },
-    });
-    if (!usuario) {
-      return false;
-    }
-    return await bcrypt.compare(clearPassword, usuario.password);
+    return await bcrypt.compare(clearPassword, hashedPassword);
   }
 
   async findAll(
     paginationParams: PaginationParamsUsuarioDTO,
-  ): Promise<Array<UsuarioEntity>> {
+  ): Promise<UsuariosPage> {
     const qb = this.repositorioUsuarios.createQueryBuilder();
     qb.skip((paginationParams.page - 1) * paginationParams.pageSize).take(
       paginationParams.pageSize,
@@ -61,13 +59,23 @@ export class UsuariosService {
         search: `%${paginationParams.search}%`,
       });
     }
-    return qb.getMany();
+    const [items, total] = await qb.getManyAndCount();
+
+    return { items, total };
   }
 
   async findOne(id: number): Promise<UsuarioEntity | null> {
     return this.repositorioUsuarios.findOne({
       where: {
         id,
+      },
+    });
+  }
+
+  async findByEmail(email: string): Promise<UsuarioEntity | null> {
+    return this.repositorioUsuarios.findOne({
+      where: {
+        email,
       },
     });
   }
