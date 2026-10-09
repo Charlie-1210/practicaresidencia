@@ -1,0 +1,86 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { map, Observable } from 'rxjs';
+import { API_BASE_URL } from '../api.config';
+
+export type UsuarioOrderBy = 'id' | 'nombre' | 'email';
+export type SortOrder = 'ASC' | 'DESC';
+
+export interface Usuario {
+  id: number;
+  nombre: string;
+  email: string;
+  activo: boolean;
+  emailValidated: boolean;
+}
+
+export interface CrearUsuarioRequest {
+  nombre: string;
+  email: string;
+  password: string;
+}
+
+export interface ActualizarUsuarioRequest {
+  nombre: string;
+}
+
+export interface UsuariosQuery {
+  page: number;
+  pageSize: number;
+  orderBy: UsuarioOrderBy;
+  order: SortOrder;
+  search?: string;
+}
+
+export interface UsuariosPage {
+  items: Usuario[];
+  total: number;
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class UsuariosApi {
+  private readonly http = inject(HttpClient);
+  private readonly endpoint = `${API_BASE_URL}/usuarios`;
+
+  obtenerTodos(query: UsuariosQuery): Observable<UsuariosPage> {
+    let params = new HttpParams()
+      .set('page', query.page)
+      .set('pageSize', query.pageSize)
+      .set('orderBy', query.orderBy)
+      .set('order', query.order);
+
+    if (query.search) {
+      params = params.set('search', query.search);
+    }
+
+    return this.http.get<UsuariosPage | Usuario[]>(this.endpoint, { params }).pipe(
+      map((response) => {
+        if (!Array.isArray(response)) {
+          return response;
+        }
+
+        const itemsBeforeCurrentPage = (query.page - 1) * query.pageSize;
+        const hasNextPage = response.length === query.pageSize;
+
+        return {
+          items: response,
+          total: itemsBeforeCurrentPage + response.length + (hasNextPage ? 1 : 0),
+        };
+      }),
+    );
+  }
+
+  crear(usuario: CrearUsuarioRequest): Observable<Usuario> {
+    return this.http.post<Usuario>(this.endpoint, usuario);
+  }
+
+  actualizar(id: number, usuario: ActualizarUsuarioRequest): Observable<unknown> {
+    return this.http.patch(`${this.endpoint}/${id}`, usuario);
+  }
+
+  eliminar(id: number): Observable<unknown> {
+    return this.http.delete(`${this.endpoint}/${id}`);
+  }
+}

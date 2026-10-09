@@ -1,0 +1,119 @@
+<main
+  class="relative flex min-h-[calc(100vh-5.5rem)] items-center justify-center overflow-hidden bg-slate-950 px-4 py-12 sm:px-6"
+>
+  <div class="pointer-events-none absolute inset-0" aria-hidden="true">
+    <div class="absolute -left-28 top-10 size-80 rounded-full bg-fuchsia-500/15 blur-3xl"></div>
+    <div class="absolute -right-28 bottom-0 size-96 rounded-full bg-cyan-400/10 blur-3xl"></div>
+  </div>
+
+  <mat-card class="login-card relative w-full max-w-5xl overflow-hidden shadow-2xl">
+    <div class="hidden bg-slate-900 p-12 text-white lg:flex lg:flex-col lg:justify-between">
+      <div>
+        <span
+          class="inline-flex items-center rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-cyan-200"
+        >
+          Acceso seguro
+        </span>
+        <h1 class="mt-8 max-w-md text-4xl font-bold leading-tight">
+          Todo lo que necesitas, en un solo lugar.
+        </h1>
+        <p class="mt-4 max-w-md text-base leading-7 text-slate-300">
+          Inicia sesión para consultar tu perfil y continuar donde lo dejaste.
+        </p>
+      </div>
+
+      <div class="mt-12 flex items-center gap-3 text-sm text-slate-400">
+        <span
+          class="flex size-9 items-center justify-center rounded-full bg-emerald-400/10 text-emerald-300"
+          aria-hidden="true"
+          >✓</span
+        >
+        Tu sesión se conserva en este dispositivo.
+      </div>
+    </div>
+
+    <mat-card-content class="login-form-panel p-7 sm:p-10 lg:p-12">
+      <div class="mx-auto max-w-md">
+        <p class="text-sm font-semibold uppercase tracking-[0.16em] text-fuchsia-600">Bienvenido</p>
+        <h2 class="mt-2 text-3xl font-bold tracking-tight text-slate-950">Inicia sesión</h2>
+        <p class="mt-3 text-sm leading-6 text-slate-600">
+          Usa el correo y la contraseña registrados en tu cuenta.
+        </p>
+
+        <form class="mt-8 space-y-5" novalidate (submit)="onSubmit($event)">
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Correo electrónico</mat-label>
+            <input
+              matInput
+              id="email"
+              type="email"
+              autocomplete="email"
+              placeholder="nombre@ejemplo.com"
+              [formField]="loginForm.email"
+              aria-describedby="email-error"
+            />
+            @if (loginForm.email().touched() && loginForm.email().invalid()) {
+              <mat-error id="email-error" role="alert">
+                @for (error of loginForm.email().errors(); track error.kind) {
+                  {{ error.message }}
+                }
+              </mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Contraseña</mat-label>
+            <input
+              matInput
+              id="password"
+              [type]="showPassword() ? 'text' : 'password'"
+              autocomplete="current-password"
+              placeholder="Tu contraseña"
+              [formField]="loginForm.password"
+              aria-describedby="password-error"
+            />
+            <button
+              mat-button
+              matSuffix
+              type="button"
+              (click)="togglePasswordVisibility()"
+              [attr.aria-label]="showPassword() ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+            >
+              {{ showPassword() ? 'Ocultar' : 'Mostrar' }}
+            </button>
+            @if (loginForm.password().touched() && loginForm.password().invalid()) {
+              <mat-error id="password-error" role="alert">
+                @for (error of loginForm.password().errors(); track error.kind) {
+                  {{ error.message }}
+                }
+              </mat-error>
+            }
+          </mat-form-field>
+
+          @if (errorMessage()) {
+            <div
+              class="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
+              role="alert"
+            >
+              {{ errorMessage() }}
+            </div>
+          }
+
+          <button
+            mat-flat-button
+            type="submit"
+            class="login-submit w-full"
+            [disabled]="isSubmitting()"
+          >
+            @if (isSubmitting()) {
+              <mat-spinner diameter="18" aria-label="Iniciando sesión" />
+              Iniciando sesión…
+            } @else {
+              Iniciar sesión
+            }
+          </button>
+        </form>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</main>

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsOptional, Length } from 'class-validator';
+import { IsInt, IsNotEmpty, IsOptional, Length } from 'class-validator';
 
 // Datos para actualizar una colonia (todo es opcional)
 export class UpdateColoniaDto {
@@ -16,4 +16,8 @@ export class UpdateColoniaDto {
     message: 'El código postal debe tener exactamente 5 caracteres',
   })
   codigoPostal?: string;
+
+  @IsOptional()
+  @IsInt({ message: 'El municipioId debe ser un número entero' })
+  municipioId?: number;
 }
