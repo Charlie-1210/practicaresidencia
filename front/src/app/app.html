@@ -27,6 +27,33 @@
             >
               Usuarios
             </a>
+            <a
+              mat-tab-link
+              routerLink="/personas"
+              routerLinkActive
+              #personasActive="routerLinkActive"
+              [active]="personasActive.isActive"
+            >
+              Personas
+            </a>
+            <a
+              mat-tab-link
+              routerLink="/productos"
+              routerLinkActive
+              #productosActive="routerLinkActive"
+              [active]="productosActive.isActive"
+            >
+              Productos
+            </a>
+            <a
+              mat-tab-link
+              routerLink="/ventas"
+              routerLinkActive
+              #ventasActive="routerLinkActive"
+              [active]="ventasActive.isActive"
+            >
+              Ventas
+            </a>
           </nav>
 
           <button mat-stroked-button type="button" [matMenuTriggerFor]="accountMenu">

@@ -33,6 +33,24 @@ export const routes: Routes = [
     title: 'Usuarios',
   },
   {
+    path: 'personas',
+    loadComponent: () => import('./personas/personas').then((module) => module.Personas),
+    canActivate: [authGuard],
+    title: 'Personas',
+  },
+  {
+    path: 'productos',
+    loadComponent: () => import('./productos/productos').then((module) => module.Productos),
+    canActivate: [authGuard],
+    title: 'Productos',
+  },
+  {
+    path: 'ventas',
+    loadComponent: () => import('./ventas/ventas').then((module) => module.Ventas),
+    canActivate: [authGuard],
+    title: 'Ventas',
+  },
+  {
     path: '**',
     redirectTo: 'home',
   },

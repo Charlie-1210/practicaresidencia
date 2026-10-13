@@ -10,6 +10,13 @@ import { AuthModule } from './auth/auth.module.js';
 import { ColoniaEntity } from './colonias/entities/colonia.entity.js';
 import { MunicipiosModule } from './municipios/municipios.module.js';
 import { MunicipioEntity } from './municipios/entities/municipio.entity.js';
+import { PersonasModule } from './personas/personas.module.js';
+import { PersonaEntity } from './personas/entities/persona.entity.js';
+import { ProductosModule } from './productos/productos.module.js';
+import { ProductoEntity } from './productos/entities/producto.entity.js';
+import { VentasModule } from './ventas/ventas.module.js';
+import { VentaEntity } from './ventas/entities/venta.entity.js';
+import { VentaDetalleEntity } from './ventas/entities/venta-detalle.entity.js';
 
 @Module({
   imports: [
@@ -25,7 +32,15 @@ import { MunicipioEntity } from './municipios/entities/municipio.entity.js';
         username: configService.get('MYSQL_USER'),
         password: configService.get('MYSQL_PASSWORD'),
         database: configService.get('MYSQL_DATABASE'),
-        entities: [UsuarioEntity, ColoniaEntity, MunicipioEntity],
+        entities: [
+          UsuarioEntity,
+          ColoniaEntity,
+          MunicipioEntity,
+          PersonaEntity,
+          ProductoEntity,
+          VentaEntity,
+          VentaDetalleEntity,
+        ],
         synchronize: true,
       }),
       inject: [ConfigService],
@@ -34,6 +49,9 @@ import { MunicipioEntity } from './municipios/entities/municipio.entity.js';
     UsuariosModule,
     MunicipiosModule,
     AuthModule,
+    PersonasModule,
+    ProductosModule,
+    VentasModule,
   ],
   controllers: [AppController],
   providers: [AppService],
