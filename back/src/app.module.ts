@@ -42,6 +42,9 @@ import { VentaDetalleEntity } from './ventas/entities/venta-detalle.entity.js';
           VentaDetalleEntity,
         ],
         synchronize: true,
+        // MySQL (en Docker) guarda las fechas en UTC. Con 'Z' el back las lee
+        // como UTC y el navegador las muestra en la hora local de México.
+        timezone: 'Z',
       }),
       inject: [ConfigService],
     }),
