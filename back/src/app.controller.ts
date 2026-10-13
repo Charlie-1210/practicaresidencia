@@ -9,11 +9,14 @@ import {
 import { AppService } from './app.service.js';
 import { TituloResponse } from './dtos/titulo-response.dto.js';
 import { PerfilDTO } from './dtos/perfil.dto.js';
+import { Public } from './auth/decorators/public.decorator.js';
 
 @Controller('app') // ruta: /app
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  // Público: el front pide el título antes de que el usuario inicie sesión
+  @Public()
   @Get('titulo') // GET /app/titulo
   getHello(): TituloResponse {
     return this.appService.getTituloApp();
